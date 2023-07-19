@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -15,4 +16,4 @@ mongoose
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Connection failed..."));
 
-app.listen(3000, () => console.log("Listening on port 3000..."));
+app.listen(port, () => console.log("Listening on port 3000..."));

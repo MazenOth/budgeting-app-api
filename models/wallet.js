@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 const Wallet = mongoose.model(
   "Wallet",
@@ -11,8 +13,8 @@ const Wallet = mongoose.model(
     },
     name: {
       type: String,
-      minlength: 5,
-      maxlength: 225,
+      minlength: 2,
+      maxlength: 50,
       required: true,
     },
     currency: {
@@ -26,3 +28,16 @@ const Wallet = mongoose.model(
     },
   })
 );
+
+function validateWallet(wallet) {
+  const schema = Joi.object({
+    userId: Joi.objectId().required(),
+    name: Joi.string().min(2).max(50).required(),
+    currency: Joi.string().valid(["USD", "EGP"]).required(),
+    balance: Joi.number().default(0),
+  });
+  return schema.validate(wallet);
+}
+
+exports.Wallet = Wallet;
+exports.validate = validateWallet;
