@@ -6,7 +6,10 @@ const User = mongoose.model(
   "User",
   new Schema({
     // need to add method to make the name is user email till the @ default
-    name: String,
+    name: {
+      type: String,
+      default: "temporary",
+    },
     email: {
       type: String,
       required: true,
@@ -25,7 +28,7 @@ const User = mongoose.model(
 
 function validateUser(user) {
   const schema = Joi.object({
-    name: Joi.string().min(2).max(50),
+    name: Joi.string().min(2).max(50).default("temporary"),
     email: Joi.string().min(5).max(255).email().required(),
     password: Joi.string().min(5).max(255).required(),
   });
