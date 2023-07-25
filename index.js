@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const signup = require("./controllers/signup");
+const signin = require("./controllers/signin");
 const port = process.env.PORT || 3000;
 
 app.use("/signup", signup);
+app.use("/signin", signin);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
