@@ -33,7 +33,8 @@ function validateWallet(wallet) {
   const schema = Joi.object({
     userId: Joi.objectId().required(),
     name: Joi.string().min(2).max(50).required(),
-    currency: Joi.string().valid(["USD", "EGP"]).required(),
+    // Need to validate enum
+    currency: Joi.string().required(),
     balance: Joi.number().default(0),
   });
   return schema.validate(wallet);

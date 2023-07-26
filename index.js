@@ -3,10 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 const signup = require("./controllers/signup");
 const signin = require("./controllers/signin");
+const addWallet = require("./controllers/addWallet");
 const port = process.env.PORT || 3000;
 
 app.use("/signup", signup);
 app.use("/signin", signin);
+app.use("/addWallet", addWallet);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
