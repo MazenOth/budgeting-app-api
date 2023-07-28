@@ -1,5 +1,7 @@
 const { Wallet, validate } = require("../models/wallet");
+const { User } = require("../models/user");
 const _ = require("lodash");
+const { use } = require("../routes/userAuthRoutes");
 
 const addWallet = async (req, res) => {
   const { error } = validate(req.body);
@@ -12,8 +14,8 @@ const addWallet = async (req, res) => {
   if (wallet) {
     return res.status(400).send("This wallet name already exists.");
   }
-  wallet = await Wallet.findOne({ userId: req.body.userId });
-  if (!wallet) {
+  const user = await User.findOne({ _id: req.body.userId });
+  if (!user) {
     return res.status(400).send("Please check your userId.");
   }
   wallet = new Wallet(
@@ -51,4 +53,9 @@ const editWallet = async (req, res) => {
   res.send(wallet);
 };
 
-module.exports = { addWallet, editWallet };
+const deleteWallet = async (req, res) => {
+  const wallet = await Wallet.findByIdAndDelete(req.params.id);
+  res.send(wallet);
+};
+
+module.exports = { addWallet, editWallet, deleteWallet };
