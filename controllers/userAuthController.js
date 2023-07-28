@@ -32,4 +32,7 @@ const signin = async (req, res) => {
   }
 };
 
+// We might add deleteAccount but it will erase all other 
+// dependancies like wallets, transitions and so
+
 module.exports = { signup, signin };
