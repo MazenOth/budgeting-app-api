@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const signup = require("./controllers/signup");
-const signin = require("./controllers/signin");
-const addWallet = require("./controllers/addWallet");
+const signin = require("./controllers/userAuthController");
+const addWallet = require("./controllers/walletController");
 const port = process.env.PORT || 3000;
 
 app.use("/signup", signup);
