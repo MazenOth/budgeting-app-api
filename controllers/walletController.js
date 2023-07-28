@@ -12,6 +12,10 @@ const addWallet = async (req, res) => {
   if (wallet) {
     return res.status(400).send("This wallet name already exists.");
   }
+  wallet = await Wallet.findOne({ userId: req.body.userId });
+  if (!wallet) {
+    return res.status(400).send("Please check your userId.");
+  }
   wallet = new Wallet(
     _.pick(req.body, ["userId", "name", "balance", "currency"])
   );
