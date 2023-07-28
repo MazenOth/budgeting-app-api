@@ -54,7 +54,11 @@ const editWallet = async (req, res) => {
 };
 
 const deleteWallet = async (req, res) => {
-  const wallet = await Wallet.findByIdAndDelete(req.params.id);
+  let wallet = await Wallet.findOne({ _id: req.params.id });
+  if (!wallet) {
+    return res.status(400).send("Please check your wallet id.");
+  }
+  wallet = await Wallet.findByIdAndDelete(req.params.id);
   res.send(wallet);
 };
 
