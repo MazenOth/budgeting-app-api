@@ -1,5 +1,6 @@
 const { User, validate } = require("../models/user");
 const _ = require("lodash");
+const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
   const { error } = validate(req.body);
@@ -12,6 +13,8 @@ const signup = async (req, res) => {
     return res.status(400).send("User already registered.");
   }
   user = new User(_.pick(req.body, ["email", "password"]));
+  const salt = bcrypt.genSaltSync(10);
+  user.password = bcrypt.hashSync(user.password, salt);
   user = await user.save();
   res.send(user);
 };
@@ -32,7 +35,7 @@ const signin = async (req, res) => {
   }
 };
 
-// We might add deleteAccount but it will erase all other 
+// We might add deleteAccount but it will erase all other
 // dependancies like wallets, transitions and so
 
 module.exports = { signup, signin };
