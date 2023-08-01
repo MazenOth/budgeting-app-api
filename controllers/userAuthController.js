@@ -1,6 +1,8 @@
 const { User, validate } = require("../models/user");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const config = require("config");
+const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
   const { error } = validate(req.body);
@@ -16,7 +18,15 @@ const signup = async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   user.password = bcrypt.hashSync(user.password, salt);
   user = await user.save();
-  res.send(user);
+
+  // By this we verify the user and sign in right away
+  // the user signed up.
+  // there is another method that user need to verify his mail first
+  // ten send the jwt.
+  const token = jwt.sign({ _id: user._id }, config.get("jwtPrivateKey"));
+  res
+    .header("x-auth-token", token)
+    .send(_.pick(user, ["_id", "name", "email"]));
 };
 
 const signin = async (req, res) => {
