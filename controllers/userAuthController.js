@@ -23,7 +23,7 @@ const signup = async (req, res) => {
   // the user signed up.
   // there is another method that user need to verify his mail first
   // ten send the jwt.
-  const token = jwt.sign({ _id: user._id }, config.get("jwtPrivateKey"));
+  const token = user.generateAuthToken();
   res
     .header("x-auth-token", token)
     .send(_.pick(user, ["_id", "name", "email"]));
