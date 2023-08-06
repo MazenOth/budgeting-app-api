@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
   try {
     const { error } = validate(req.body);
     if (error) {
@@ -29,7 +29,7 @@ const signup = async (req, res) => {
       .header("x-auth-token", token)
       .send(_.pick(user, ["_id", "name", "email"]));
   } catch (ex) {
-    res.status(500).send("Something failed.")
+    next(ex);
   }
 };
 
