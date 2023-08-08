@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const config = require("config");
+require("express-async-errors");
 
 const port = process.env.PORT || 3000;
 
