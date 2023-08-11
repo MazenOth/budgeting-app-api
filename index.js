@@ -1,7 +1,5 @@
-const express = require("express");
-const app = express();
+const app = require("./app");
 const config = require("config");
-require("express-async-errors");
 
 const port = process.env.PORT || 3000;
 
@@ -11,7 +9,6 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-require("./startup/routes")(app);
-require("./startup/db")();
+
 
 app.listen(port, () => console.log("Listening on port 3000..."));
