@@ -36,13 +36,16 @@ const signin = async (req, res) => {
   }
   let user = await User.findOne({
     email: req.body.email,
-    password: req.body.password,
   });
-  if (user) {
-    return res.status(200).send("Signed in successfully!");
-  } else {
+
+  if (!user)
     return res.status(400).send("Please check your email or password!");
-  }
+
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!validPassword)
+    return res.status(400).send("Please check your email or password!");
+
+  res.status(200).send("Signed in successfully!");
 };
 
 // We might add deleteAccount but it will erase all other
