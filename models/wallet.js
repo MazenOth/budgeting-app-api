@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+const currencyEnum = ["USD", "EGP"];
+
 const Wallet = mongoose.model(
   "Wallet",
   new Schema({
@@ -19,7 +21,7 @@ const Wallet = mongoose.model(
     },
     currency: {
       type: String,
-      enum: ["USD", "EGP"],
+      enum: [...currencyEnum],
       required: true,
     },
     balance: {
@@ -33,8 +35,7 @@ function validateWallet(wallet) {
   const schema = Joi.object({
     userId: Joi.objectId().required(),
     name: Joi.string().min(2).max(50).required(),
-    // Need to validate enum
-    currency: Joi.string().required(),
+    currency: Joi.any().valid(...currencyEnum),
     balance: Joi.number().default(0),
   });
   return schema.validate(wallet);

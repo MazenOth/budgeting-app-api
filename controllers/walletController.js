@@ -1,7 +1,6 @@
 const { Wallet, validate } = require("../models/wallet");
 const { User } = require("../models/user");
 const _ = require("lodash");
-const { use } = require("../routes/userAuthRoutes");
 
 const addWallet = async (req, res) => {
   const { error } = validate(req.body);
