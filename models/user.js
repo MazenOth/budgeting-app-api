@@ -5,10 +5,13 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema({
-  // need to add method to make the name is user email till the @ default
   name: {
     type: String,
-    default: "temporary",
+    default: function () {
+      let adressIndex = this.email.indexOf("@");
+      let substring = this.email.substring(0, adressIndex);
+      return substring[0].toUpperCase() + substring.slice(1);
+    },
   },
   email: {
     type: String,
@@ -35,7 +38,7 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
   const schema = Joi.object({
-    name: Joi.string().min(2).max(50).default("temporary"),
+    name: Joi.string().min(2).max(50),
     email: Joi.string().min(5).max(255).email().required(),
     password: Joi.string().min(5).max(255).required(),
   });
