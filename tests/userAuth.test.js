@@ -62,7 +62,7 @@ describe("signin", () => {
     const res = await request(app).post("/signin").send(userData);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body["accessToken"]).toEqual(expect.any(String));
+    expect(res.headers["x-auth-token"]).toEqual(expect.any(String));
   });
 
   it("returns status code 400 if email isn't valid", async () => {

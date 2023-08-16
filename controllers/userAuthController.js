@@ -46,7 +46,9 @@ const signin = async (req, res) => {
     return res.status(400).send("Please check your email or password!");
 
   const token = user.generateAuthToken();
-  res.send({ accessToken: token });
+  res
+  .header("x-auth-token", token)
+  .send("Token sent successfully!");
 };
 
 // We might add deleteAccount but it will erase all other
