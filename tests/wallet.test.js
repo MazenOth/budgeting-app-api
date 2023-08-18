@@ -12,12 +12,6 @@ let newWallet = "Wakanda";
 
 let walletId;
 
-beforeAll(async () => {
-  await Wallet.findOneAndDelete({ name: newWallet }).where({
-    userId: walletData.userId,
-  });
-});
-
 describe("addWallet", () => {
   it("returns status code 200 if valid userId, name, currency passed", async () => {
     const res = await request(app).post("/addWallet").send(walletData);
@@ -99,6 +93,20 @@ describe("editWallet", () => {
       currency: "EGP",
       balance: 0,
     });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  describe("deleteWallet", () => {
+    it("returns status code 200 if existing wallet id passed", async () => {
+      const res = await request(app).delete(`/deleteWallet/${walletId}`);
+
+      expect(res.statusCode).toBe(200);
+    });
+  });
+
+  it("returns status code 400 if not existing wallet id passed", async () => {
+    const res = await request(app).delete(`/deleteWallet/${walletId}`);
 
     expect(res.statusCode).toBe(400);
   });
