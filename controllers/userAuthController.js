@@ -20,7 +20,7 @@ const signup = async (req, res) => {
   user.password = bcrypt.hashSync(user.password, salt);
   user = await user.save();
 
-  let category = await Category.insertMany([
+  await Category.insertMany([
     {
       userId: user._id,
       name: "Transportation",
