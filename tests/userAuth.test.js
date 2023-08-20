@@ -1,19 +1,28 @@
 const app = require("../app");
 const request = require("supertest");
 const { User } = require("../models/user");
+const { Category } = require("../models/category");
 
 const userData = {
   email: "testest@gmail.com",
   password: "123456789",
 };
 
+let userId;
+
 beforeAll(async () => {
   await User.findOneAndDelete({ email: userData.email });
+});
+
+afterAll(async () => {
+  await Category.deleteMany({ userId: userId });
 });
 
 describe("signup", () => {
   it("returns status code 200 if valid email and password passed", async () => {
     const res = await request(app).post("/signup").send(userData);
+
+    userId = res.body._id;
 
     expect(res.statusCode).toBe(200);
     expect(res.headers["x-auth-token"]).toEqual(expect.any(String));
