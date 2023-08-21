@@ -24,4 +24,30 @@ const addCategory = async (req, res) => {
   res.send(category);
 };
 
-module.exports = { addCategory };
+const editCategory = async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+  let category = await Category.findOne({ userId: req.body.userId }).where({
+    _id: req.params.id,
+  });
+  if (!category) {
+    return res.status(400).send("Please check your categoryId or userId.");
+  }
+  category = await Category.findOne({ name: req.body.name }).where({
+    userId: req.body.userId,
+  });
+  if (category) {
+    return res.status(400).send("This category name already exists.");
+  }
+  category = await Category.findByIdAndUpdate(
+    req.params.id,
+    _.pick(req.body, ["name", "group", "type"]),
+    { new: true }
+  );
+
+  res.send(category);
+};
+
+module.exports = { addCategory, editCategory };
