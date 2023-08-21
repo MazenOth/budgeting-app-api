@@ -33,17 +33,17 @@ const editWallet = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  wallet = await Wallet.findOne({ name: req.body.name }).where({
-    userId: req.body.userId,
-  });
-  if (wallet) {
-    return res.status(400).send("This wallet name already exists.");
-  }
   wallet = await Wallet.findOne({ userId: req.body.userId }).where({
     _id: req.params.id,
   });
   if (!wallet) {
     return res.status(400).send("Please check your userId.");
+  }
+  wallet = await Wallet.findOne({ name: req.body.name }).where({
+    userId: req.body.userId,
+  });
+  if (wallet) {
+    return res.status(400).send("This wallet name already exists.");
   }
   wallet = await Wallet.findByIdAndUpdate(
     req.params.id,
