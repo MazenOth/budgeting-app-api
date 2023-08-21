@@ -25,10 +25,6 @@ const addWallet = async (req, res) => {
 };
 
 const editWallet = async (req, res) => {
-  let wallet = await Wallet.findOne({ _id: req.params.id });
-  if (!wallet) {
-    return res.status(400).send("Please check your wallet id.");
-  }
   const { error } = validate(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message);
@@ -37,7 +33,7 @@ const editWallet = async (req, res) => {
     _id: req.params.id,
   });
   if (!wallet) {
-    return res.status(400).send("Please check your userId.");
+    return res.status(400).send("Please check your walletId or userId.");
   }
   wallet = await Wallet.findOne({ name: req.body.name }).where({
     userId: req.body.userId,
