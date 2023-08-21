@@ -29,7 +29,7 @@ const editWallet = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  wallet = await Wallet.findOne({ userId: req.body.userId }).where({
+  let wallet = await Wallet.findOne({ userId: req.body.userId }).where({
     _id: req.params.id,
   });
   if (!wallet) {
