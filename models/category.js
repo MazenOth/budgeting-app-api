@@ -44,8 +44,8 @@ function validateCategory(category) {
   const schema = Joi.object({
     userId: Joi.objectId().required(),
     name: Joi.string().min(2).max(50).required(),
-    group: Joi.any().valid(...groupEnum),
-    type: Joi.any().valid(...typeEnum),
+    group: Joi.any().valid(...groupEnum).required(),
+    type: Joi.any().valid(...typeEnum).required(),
   });
   return schema.validate(category);
 }
