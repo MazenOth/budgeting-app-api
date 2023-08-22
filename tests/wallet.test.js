@@ -3,7 +3,7 @@ const request = require("supertest");
 const { Wallet } = require("../models/wallet");
 
 const walletData = {
-  userId: "64da97335d88662d7a9fc7c0",
+  userId: "64e517f612c25e3d292c3a29",
   name: "testwallet",
   currency: "EGP",
 };
@@ -66,7 +66,7 @@ describe("addWallet", () => {
 describe("editWallet", () => {
   it("returns status code 200 if valid userId, name, currency passed", async () => {
     const res = await request(app).put(`/editWallet/${walletId}`).send({
-      userId: "64da97335d88662d7a9fc7c0",
+      userId: "64e517f612c25e3d292c3a29",
       name: newWallet,
       currency: "EGP",
       balance: 0,
