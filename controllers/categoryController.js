@@ -50,4 +50,13 @@ const editCategory = async (req, res) => {
   res.send(category);
 };
 
-module.exports = { addCategory, editCategory };
+const deleteCategory = async (req, res) => {
+  let category = await Category.findOne({ _id: req.params.id });
+  if (!category) {
+    return res.status(400).send("Please check your category id.");
+  }
+  category = await Category.findByIdAndDelete(req.params.id);
+  res.send(category);
+};
+
+module.exports = { addCategory, editCategory, deleteCategory };
