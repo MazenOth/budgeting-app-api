@@ -101,13 +101,13 @@ describe("editWallet", () => {
 
     expect(res.statusCode).toBe(400);
   });
+});
 
-  describe("deleteWallet", () => {
-    it("returns status code 200 if existing wallet id passed", async () => {
-      const res = await request(app).delete(`/deleteWallet/${walletId}`);
+describe("deleteWallet", () => {
+  it("returns status code 200 if existing wallet id passed", async () => {
+    const res = await request(app).delete(`/deleteWallet/${walletId}`);
 
-      expect(res.statusCode).toBe(200);
-    });
+    expect(res.statusCode).toBe(200);
   });
 
   it("returns status code 400 if not existing wallet id passed", async () => {

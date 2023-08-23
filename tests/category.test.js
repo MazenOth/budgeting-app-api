@@ -12,12 +12,6 @@ const categoryData = {
   type: "Expense",
 };
 
-afterAll(async () => {
-  await Category.deleteOne({ name: newCategoryName }).where({
-    walletId: categoryData.walletId,
-  });
-});
-
 describe("addCategory", () => {
   it("returns status code 200 if valid walletId, name, group and type passed", async () => {
     const res = await request(app).post("/addCategory").send(categoryData);
@@ -95,5 +89,74 @@ describe("editCategory", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
+  });
+
+  it("returns status code 400 if not valid walletId passed", async () => {
+    const res = await request(app).put(`/editCategory/${categoryId}`).send({
+      walletId: "64e51636d4510fb005a3638d",
+      name: newCategoryName,
+      group: "Required Expense",
+      type: "Expense",
+    });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if repeated name passed", async () => {
+    const res = await request(app).put(`/editCategory/${categoryId}`).send({
+      walletId: categoryData.walletId,
+      name: newCategoryName,
+      group: "Required Expense",
+      type: "Expense",
+    });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if not valid name passed", async () => {
+    const res = await request(app).put(`/editCategory/${categoryId}`).send({
+      walletId: categoryData.walletId,
+      name: "",
+      group: "Required Expense",
+      type: "Expense",
+    });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if not valid group passed", async () => {
+    const res = await request(app).put(`/editCategory/${categoryId}`).send({
+      walletId: categoryData.walletId,
+      name: newCategoryName,
+      group: "",
+      type: "Expense",
+    });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if not valid type passed", async () => {
+    const res = await request(app).put(`/editCategory/${categoryId}`).send({
+      walletId: categoryData.walletId,
+      name: newCategoryName,
+      group: "Required Expense",
+      type: "",
+    });
+
+    expect(res.statusCode).toBe(400);
+  });
+});
+
+describe("deleteCategory", () => {
+  it("returns status code 200 if existing category id passed", async () => {
+    const res = await request(app).delete(`/deleteCategory/${categoryId}`);
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("returns status code 400 if not existing category id passed", async () => {
+    const res = await request(app).delete(`/deleteCategory/${categoryId}`);
+
+    expect(res.statusCode).toBe(400);
   });
 });
