@@ -1,5 +1,6 @@
 const { Wallet, validate } = require("../models/wallet");
 const { User } = require("../models/user");
+const { Category } = require("../models/category");
 const _ = require("lodash");
 
 const addWallet = async (req, res) => {
@@ -21,6 +22,34 @@ const addWallet = async (req, res) => {
     _.pick(req.body, ["userId", "name", "balance", "currency"])
   );
   wallet = await wallet.save();
+
+  await Category.insertMany([
+    {
+      walletId: wallet._id,
+      name: "Transportation",
+      group: "Required Expense",
+      type: "Expense",
+    },
+    {
+      walletId: wallet._id,
+      name: "Education",
+      group: "Up & Comers",
+      type: "Expense",
+    },
+    {
+      walletId: wallet._id,
+      name: "Streaming Service",
+      group: "Fun & Relax",
+      type: "Expense",
+    },
+    {
+      walletId: wallet._id,
+      name: "Salary",
+      group: "Income",
+      type: "Income",
+    },
+  ]);
+
   res.send(wallet);
 };
 

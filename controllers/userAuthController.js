@@ -1,5 +1,4 @@
 const { User, validate } = require("../models/user");
-const { Category } = require("../models/category");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const config = require("config");
@@ -19,33 +18,6 @@ const signup = async (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   user.password = bcrypt.hashSync(user.password, salt);
   user = await user.save();
-
-  await Category.insertMany([
-    {
-      userId: user._id,
-      name: "Transportation",
-      group: "Required Expense",
-      type: "Expense",
-    },
-    {
-      userId: user._id,
-      name: "Education",
-      group: "Up & Comers",
-      type: "Expense",
-    },
-    {
-      userId: user._id,
-      name: "Streaming Service",
-      group: "Fun & Relax",
-      type: "Expense",
-    },
-    {
-      userId: user._id,
-      name: "Salary",
-      group: "Income",
-      type: "Income",
-    },
-  ]);
 
   // By this we verify the user and sign in right away
   // the moment the user signed up.

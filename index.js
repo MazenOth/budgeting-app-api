@@ -9,6 +9,4 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-
-
 app.listen(port, () => console.log("Listening on port 3000..."));
