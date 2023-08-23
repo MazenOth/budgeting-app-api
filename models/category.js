@@ -16,9 +16,9 @@ const typeEnum = ["Income", "Expense"];
 const Category = mongoose.model(
   "Category",
   new Schema({
-    userId: {
+    walletId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Wallet",
       required: true,
     },
     name: {
