@@ -93,7 +93,7 @@ describe("signin", () => {
   it("returns status code 400 if not existing email is passed", async () => {
     const res = await request(app)
       .post("/signin")
-      .send({ email: "mazen@gmail.com", password: "123456789" });
+      .send({ email: "notexisting@gmail.com", password: "123456789" });
 
     expect(res.statusCode).toBe(400);
   });

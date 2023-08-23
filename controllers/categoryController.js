@@ -1,5 +1,5 @@
 const { Category, validate } = require("../models/category");
-const { User } = require("../models/user");
+const { Wallet } = require("../models/wallet");
 const _ = require("lodash");
 
 const addCategory = async (req, res) => {
@@ -7,18 +7,18 @@ const addCategory = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  const user = await User.findOne({ _id: req.body.userId });
-  if (!user) {
-    return res.status(400).send("Please check your userId.");
+  const wallet = await Wallet.findOne({ _id: req.body.walletId });
+  if (!wallet) {
+    return res.status(400).send("Please check your walletId.");
   }
   let category = await Category.findOne({ name: req.body.name }).where({
-    userId: req.body.userId,
+    walletId: req.body.walletId,
   });
   if (category) {
     return res.status(400).send("This category name already exists.");
   }
   category = new Category(
-    _.pick(req.body, ["userId", "name", "group", "type"])
+    _.pick(req.body, ["walletId", "name", "group", "type"])
   );
   category = await category.save();
   res.send(category);
@@ -29,14 +29,14 @@ const editCategory = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  let category = await Category.findOne({ userId: req.body.userId }).where({
+  let category = await Category.findOne({ walletId: req.body.walletId }).where({
     _id: req.params.id,
   });
   if (!category) {
-    return res.status(400).send("Please check your categoryId or userId.");
+    return res.status(400).send("Please check your categoryId or walletId.");
   }
   category = await Category.findOne({ name: req.body.name }).where({
-    userId: req.body.userId,
+    walletId: req.body.walletId,
   });
   if (category) {
     return res.status(400).send("This category name already exists.");

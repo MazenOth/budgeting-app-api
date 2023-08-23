@@ -66,7 +66,7 @@ describe("addWallet", () => {
 describe("editWallet", () => {
   it("returns status code 200 if valid userId, name, currency passed", async () => {
     const res = await request(app).put(`/editWallet/${walletId}`).send({
-      userId: "64e517f612c25e3d292c3a29",
+      userId: walletData.userId,
       name: newWallet,
       currency: "EGP",
       balance: 0,
