@@ -1,6 +1,7 @@
 const app = require("../app");
 const request = require("supertest");
 const { Wallet } = require("../models/wallet");
+const { Category } = require("../models/category");
 
 const walletData = {
   userId: "64e517f612c25e3d292c3a29",
@@ -11,6 +12,10 @@ const walletData = {
 let newWallet = "Wakanda";
 
 let walletId;
+
+afterAll(async () => {
+  await Category.deleteMany({ walletId: walletId });
+});
 
 describe("addWallet", () => {
   it("returns status code 200 if valid userId, name, currency passed", async () => {

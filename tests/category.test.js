@@ -6,7 +6,7 @@ let categoryId;
 let newCategoryName = "newtestcategory";
 
 const categoryData = {
-  userId: "64e51636d4510fb004a3638d",
+  walletId: "64e65949b9b208ee782b4161",
   name: "testcategory",
   group: "Required Expense",
   type: "Expense",
@@ -14,12 +14,12 @@ const categoryData = {
 
 afterAll(async () => {
   await Category.deleteOne({ name: newCategoryName }).where({
-    userId: categoryData.userId,
+    walletId: categoryData.walletId,
   });
 });
 
 describe("addCategory", () => {
-  it("returns status code 200 if valid userId, name, group and type passed", async () => {
+  it("returns status code 200 if valid walletId, name, group and type passed", async () => {
     const res = await request(app).post("/addCategory").send(categoryData);
 
     categoryId = res.body._id;
@@ -28,9 +28,9 @@ describe("addCategory", () => {
     expect(res.body).toEqual(expect.any(Object));
   });
 
-  it("returns status code 400 if not valid userId passed", async () => {
+  it("returns status code 400 if not valid walletId passed", async () => {
     const res = await request(app).post("/addCategory").send({
-      userId: "64e51636d4510fb005a3638d",
+      walletId: "64e51636d4510fb005a3638d",
       name: categoryData.name,
       group: categoryData.group,
       type: categoryData.type,
@@ -41,7 +41,7 @@ describe("addCategory", () => {
 
   it("returns status code 400 if not valid name passed", async () => {
     const res = await request(app).post("/addCategory").send({
-      userId: categoryData.userId,
+      walletId: categoryData.walletId,
       name: "",
       group: categoryData.group,
       type: categoryData.type,
@@ -52,7 +52,7 @@ describe("addCategory", () => {
 
   it("returns status code 400 if not valid group passed", async () => {
     const res = await request(app).post("/addCategory").send({
-      userId: categoryData.userId,
+      walletId: categoryData.walletId,
       name: categoryData.name,
       group: "",
       type: categoryData.type,
@@ -63,7 +63,7 @@ describe("addCategory", () => {
 
   it("returns status code 400 if not valid type passed", async () => {
     const res = await request(app).post("/addCategory").send({
-      userId: categoryData.userId,
+      walletId: categoryData.walletId,
       name: categoryData.name,
       group: categoryData.group,
       type: "",
@@ -74,7 +74,7 @@ describe("addCategory", () => {
 
   it("returns status code 400 if repeated name passed", async () => {
     const res = await request(app).post("/addCategory").send({
-      userId: categoryData.userId,
+      walletId: categoryData.walletId,
       name: categoryData.name,
       group: categoryData.group,
       type: categoryData.type,
@@ -85,9 +85,9 @@ describe("addCategory", () => {
 });
 
 describe("editCategory", () => {
-  it("returns status code 200 if valid categoryId, userId, name, group and type passed", async () => {
+  it("returns status code 200 if valid categoryId, walletId, name, group and type passed", async () => {
     const res = await request(app).put(`/editCategory/${categoryId}`).send({
-      userId: categoryData.userId,
+      walletId: categoryData.walletId,
       name: newCategoryName,
       group: "Required Expense",
       type: "Expense",
