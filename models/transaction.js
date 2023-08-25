@@ -8,35 +8,15 @@ const Transaction = mongoose.model(
   new Schema({
     wallet: {
       type: new Schema({
-        name: {
-          type: String,
-          minlength: 2,
-          maxlength: 50,
-          required: true,
-        },
+        name: String,
       }),
       required: true,
     },
     category: {
       type: new Schema({
-        name: {
-          type: String,
-          required: true,
-          minlength: 2,
-          maxlength: 50,
-        },
-        group: {
-          type: String,
-          enum: [
-            "Required Expense",
-            "Up & Comers",
-            "Fun & Relax",
-            "Investing & Debt Payments",
-            "Income",
-            "Other",
-          ],
-          required: true,
-        },
+        name: String,
+        group: String,
+        type: String,
       }),
       required: true,
     },
