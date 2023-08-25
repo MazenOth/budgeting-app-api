@@ -61,7 +61,7 @@ const editTransaction = async (req, res) => {
   let transaction = await Transaction.findById(req.params.id);
   if (!transaction)
     return res.status(400).send("Please check your transactionId");
-  if (transaction.wallet._id !== req.body.walletId)
+  if (transaction.wallet._id != req.body.walletId)
     return res.status(400).send("Wallet cannot be changed.");
   const wallet = await Wallet.findById(req.body.walletId);
   const category = await Category.findById(req.body.categoryId).where({
@@ -96,7 +96,7 @@ const editTransaction = async (req, res) => {
     });
 
     session.endSession();
-    console.log("Transaction succeeded.");
+    console.log("Transaction Updated.");
   } catch (error) {
     console.log("transaction error", error.message);
   }
