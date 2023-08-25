@@ -50,15 +50,18 @@ const Transaction = mongoose.model(
       default: Date.now,
       required: true,
     },
-    description: String,
   })
 );
 
 function validateTransaction(transaction) {
   const schema = Joi.object({
-    userId: Joi.objectId().required(),
+    walletId: Joi.objectId().required(),
     categoryId: Joi.objectId().required(),
-    transactionDate: Joi.date().min("1-1-1992").max("12-31-2123"),
+    amount: Joi.number().min(0.001).max(1000000000000).required(),
+    transactionDate: Joi.date()
+      .min("1-1-1992")
+      .max("12-31-2123")
+      .default(Date.now),
   });
   return schema.validate(transaction);
 }
