@@ -14,7 +14,7 @@ const addTransaction = async (req, res) => {
     return res.status(400).send("Please check your walletId.");
   }
 
-  const category = await Category.findById(req.body.categoryId);
+  const category = await Category.findById(req.body.categoryId).where({ walletId: req.body.walletId});
   if (!category) {
     return res.status(400).send("Please check your categoryId.");
   }
