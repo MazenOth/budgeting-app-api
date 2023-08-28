@@ -102,4 +102,28 @@ const editTransaction = async (req, res) => {
   }
 };
 
-module.exports = { addTransaction, editTransaction };
+const deleteTransaction = async (req, res) => {
+  let transaction = await Transaction.findOne({ _id: req.params.id });
+  if (!transaction) {
+    return res.status(400).send("Please check your transaction id.");
+  }
+  const wallet = await Wallet.findById(transaction.wallet._id);
+  transaction = await Transaction.findByIdAndDelete(req.params.id);
+
+  try {
+    const session = await mongoose.startSession();
+    await session.withTransaction(async () => {
+      var newBalance = wallet.balance + transaction.amount;
+      wallet.balance = newBalance;
+      wallet.save();
+      res.send(transaction);
+    });
+
+    session.endSession();
+    console.log("Transaction Deleted.");
+  } catch (error) {
+    console.log("transaction error", error.message);
+  }
+};
+
+module.exports = { addTransaction, editTransaction, deleteTransaction };
