@@ -26,8 +26,6 @@ describe("addTransaction", () => {
     expect(res.body).toEqual(expect.any(Object));
   });
 
-  // sad cases:
-
   it("returns status code 400 if unvalid walletId passed", async () => {
     const res = await request(app).post("/addTransaction").send({
       walletId: "",
@@ -68,3 +66,65 @@ describe("addTransaction", () => {
     expect(res.statusCode).toBe(400);
   });
 });
+
+describe("editTransaction", () => {
+  it("returns status code 200 and transaction object if valid walletId, categoryId and amount passed", async () => {
+    const res = await request(app)
+      .put(`/editTransaction/${transactionId}`)
+      .send(transactionData);
+
+    transactionId = res.body._id;
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(expect.any(Object));
+  });
+
+  it("returns status code 400 if unvalid walletId passed", async () => {
+    const res = await request(app)
+      .put(`/editTransaction/${transactionId}`)
+      .send({
+        walletId: "64c38615e14527272260b54e",
+        categoryId: transactionData.categoryId,
+        amount: transactionData.amount,
+      });
+
+    expect(res.statusCode).toBe(400);
+  });
+  
+  it("returns status code 400 if not the same walletId passed", async () => {
+    const res = await request(app)
+      .put(`/editTransaction/${transactionId}`)
+      .send({
+        walletId: "64e65949b9b208ee782b4161",
+        categoryId: transactionData.categoryId,
+        amount: transactionData.amount,
+      });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if not valid categoryId passed", async () => {
+    const res = await request(app)
+      .put(`/editTransaction/${transactionId}`)
+      .send({
+        walletId: transactionData.walletId,
+        categoryId: "64e86a745e28a5db5f4a8f34",
+        amount: transactionData.amount,
+      });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it("returns status code 400 if not valid amount passed", async () => {
+    const res = await request(app)
+      .put(`/editTransaction/${transactionId}`)
+      .send({
+        walletId: transactionData.walletId,
+        categoryId: transactionData.categoryId,
+        amount: -100,
+      });
+
+    expect(res.statusCode).toBe(400);
+  });
+});
+
