@@ -10,10 +10,6 @@ const transactionData = {
   amount: 100,
 };
 
-afterAll(async () => {
-  await Transaction.deleteOne({ _id: transactionId });
-});
-
 describe("addTransaction", () => {
   it("returns status code 200 and transaction object if valid walletId, categoryId and amount passed", async () => {
     const res = await request(app)
@@ -127,4 +123,19 @@ describe("editTransaction", () => {
     expect(res.statusCode).toBe(400);
   });
 });
+
+describe("deleteTransaction", () => {
+  it("returns status code 200 if existing transaction id passed", async () => {
+    const res = await request(app).delete(`/deleteTransaction/${transactionId}`);
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("returns status code 400 if not existing transaction id passed", async () => {
+    const res = await request(app).delete(`/deleteTransaction/${transactionId}`);
+
+    expect(res.statusCode).toBe(400);
+  });
+});
+
 
