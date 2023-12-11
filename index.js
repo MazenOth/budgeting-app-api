@@ -1,7 +1,9 @@
 const app = require("./app");
 const config = require("config");
+const cors = require("cors");
+app.use(cors());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // on cmd >set budgeting_jwtPrivateKey=mySecureKey
 if (!config.get("jwtPrivateKey")) {
@@ -9,4 +11,4 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-app.listen(port, () => console.log("Listening on port 3000..."));
+app.listen(port, () => console.log("Listening on port 4000..."));

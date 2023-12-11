@@ -49,7 +49,12 @@ const signin = async (req, res) => {
   res.header("x-auth-token", token).send("Token sent successfully!");
 };
 
+const users = async (req, res) => {
+  const users = await User.find();
+  res.send(users);
+};
+
 // We might add deleteAccount but it will erase all other
 // dependancies like wallets, transitions and so
 
-module.exports = { signup, signin };
+module.exports = { signup, signin, users };

@@ -1,3 +1,4 @@
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const userAuthRoutes = require("../routes/userAuthRoutes");
 const walletRoutes = require("../routes/walletRoutes");
@@ -7,6 +8,7 @@ const home = require("../routes/home");
 const error = require("../middleware/error");
 
 module.exports = function (app) {
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(userAuthRoutes);
