@@ -6,7 +6,7 @@ const {
 } = require("../controllers/walletController");
 const router = express.Router();
 
-router.post("/addWallet", addWallet);
+router.post("/addWallet/:id", addWallet);
 router.put("/editWallet/:id", editWallet);
 router.delete("/deleteWallet/:id", deleteWallet);
 

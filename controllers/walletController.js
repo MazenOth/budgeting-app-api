@@ -9,18 +9,21 @@ const addWallet = async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
   let wallet = await Wallet.findOne({ name: req.body.name }).where({
-    userId: req.body.userId,
+    userId: req.params.id,
   });
   if (wallet) {
     return res.status(400).send("This wallet name already exists.");
   }
-  const user = await User.findOne({ _id: req.body.userId });
+  const user = await User.findOne({ _id: req.params.id });
   if (!user) {
     return res.status(400).send("Please check your userId.");
   }
-  wallet = new Wallet(
-    _.pick(req.body, ["userId", "name", "balance", "currency"])
-  );
+  wallet = new Wallet({
+    userId: req.params.id,
+    name: req.body.name,
+    balance: req.body.balance,
+    currency: req.body.currency,
+  });
   wallet = await wallet.save();
 
   await Category.insertMany([

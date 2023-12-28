@@ -33,7 +33,7 @@ const Wallet = mongoose.model(
 
 function validateWallet(wallet) {
   const schema = Joi.object({
-    userId: Joi.objectId().required(),
+    userId: Joi.objectId(),
     name: Joi.string().min(2).max(50).required(),
     currency: Joi.any().valid(...currencyEnum),
     balance: Joi.number().default(0),
