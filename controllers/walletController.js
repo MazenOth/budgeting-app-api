@@ -61,20 +61,20 @@ const editWallet = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  let wallet = await Wallet.findOne({ userId: req.body.userId }).where({
-    _id: req.params.id,
+  let wallet = await Wallet.findOne({ userId: req.params.userId }).where({
+    _id: req.params.walletId,
   });
   if (!wallet) {
     return res.status(400).send("Please check your walletId or userId.");
   }
   wallet = await Wallet.findOne({ name: req.body.name }).where({
-    userId: req.body.userId,
+    userId: req.params.userId,
   });
   if (wallet) {
     return res.status(400).send("This wallet name already exists.");
   }
   wallet = await Wallet.findByIdAndUpdate(
-    req.params.id,
+    req.params.walletId,
     _.pick(req.body, ["name", "balance", "currency"]),
     { new: true }
   );
@@ -91,4 +91,11 @@ const deleteWallet = async (req, res) => {
   res.send(wallet);
 };
 
-module.exports = { addWallet, editWallet, deleteWallet };
+const getWallets = async (req, res) => {
+  const wallets = await Wallet.find({}, { name: 1 }).where({
+    userId: req.params.id,
+  });
+  res.send(wallets);
+};
+
+module.exports = { addWallet, editWallet, deleteWallet, getWallets };
