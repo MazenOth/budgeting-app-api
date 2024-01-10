@@ -59,4 +59,11 @@ const deleteCategory = async (req, res) => {
   res.send(category);
 };
 
-module.exports = { addCategory, editCategory, deleteCategory };
+const getCategories = async (req, res) => {
+  const categories = await Category.find({}, { name: 1 }).where({
+    walletId: req.params.walletId,
+  });
+  res.send(categories);
+};
+
+module.exports = { addCategory, editCategory, deleteCategory, getCategories };
