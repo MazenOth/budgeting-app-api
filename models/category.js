@@ -42,7 +42,7 @@ const Category = mongoose.model(
 
 function validateCategory(category) {
   const schema = Joi.object({
-    walletId: Joi.objectId().required(),
+    walletId: Joi.objectId(),
     name: Joi.string().min(2).max(50).required(),
     group: Joi.any().valid(...groupEnum).required(),
     type: Joi.any().valid(...typeEnum).required(),

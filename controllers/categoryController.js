@@ -7,19 +7,22 @@ const addCategory = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  const wallet = await Wallet.findOne({ _id: req.body.walletId });
+  const wallet = await Wallet.findOne({ _id: req.params.walletId });
   if (!wallet) {
     return res.status(400).send("Please check your walletId.");
   }
   let category = await Category.findOne({ name: req.body.name }).where({
-    walletId: req.body.walletId,
+    walletId: req.params.walletId,
   });
   if (category) {
     return res.status(400).send("This category name already exists.");
   }
-  category = new Category(
-    _.pick(req.body, ["walletId", "name", "group", "type"])
-  );
+  category = new Category({
+    walletId: req.params.walletId,
+    name: req.body.name,
+    group: req.body.group,
+    type: req.body.type,
+  });
   category = await category.save();
   res.send(category);
 };
@@ -29,20 +32,22 @@ const editCategory = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  let category = await Category.findOne({ walletId: req.body.walletId }).where({
-    _id: req.params.id,
+  let category = await Category.findOne({
+    walletId: req.params.walletId,
+  }).where({
+    _id: req.params.categoryId,
   });
   if (!category) {
     return res.status(400).send("Please check your categoryId or walletId.");
   }
   category = await Category.findOne({ name: req.body.name }).where({
-    walletId: req.body.walletId,
+    walletId: req.params.walletId,
   });
   if (category) {
     return res.status(400).send("This category name already exists.");
   }
   category = await Category.findByIdAndUpdate(
-    req.params.id,
+    req.params.categoryId,
     _.pick(req.body, ["name", "group", "type"]),
     { new: true }
   );
@@ -51,11 +56,11 @@ const editCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req, res) => {
-  let category = await Category.findOne({ _id: req.params.id });
+  let category = await Category.findOne({ _id: req.params.categoryId });
   if (!category) {
     return res.status(400).send("Please check your category id.");
   }
-  category = await Category.findByIdAndDelete(req.params.id);
+  category = await Category.findByIdAndDelete(req.params.categoryId);
   res.send(category);
 };
 
