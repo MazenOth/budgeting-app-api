@@ -126,4 +126,16 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
-module.exports = { addTransaction, editTransaction, deleteTransaction };
+const getTransactions = async (req, res) => {
+  const transactions = await Transaction.find().where({
+    "wallet._id": req.params.walletId,
+  });
+  res.send(transactions);
+};
+
+module.exports = {
+  addTransaction,
+  editTransaction,
+  deleteTransaction,
+  getTransactions,
+};
