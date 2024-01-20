@@ -8,7 +8,10 @@ const {
 const router = express.Router();
 
 router.post("/addTransaction/:walletId", addTransaction);
-router.put("/editTransaction/:id", editTransaction);
+router.put(
+  "/editTransaction/:transactionId/:walletId/:categoryId",
+  editTransaction
+);
 router.delete("/deleteTransaction/:id", deleteTransaction);
 router.get("/getTransactions/:walletId", getTransactions);
 

@@ -36,7 +36,7 @@ const Transaction = mongoose.model(
 function validateTransaction(transaction) {
   const schema = Joi.object({
     walletId: Joi.objectId(),
-    categoryId: Joi.objectId().required(),
+    categoryId: Joi.objectId(),
     amount: Joi.number().min(0.001).max(1000000000000).required(),
     transactionDate: Joi.date()
       .min("1-1-1992")

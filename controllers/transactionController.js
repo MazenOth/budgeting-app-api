@@ -58,23 +58,23 @@ const editTransaction = async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-  let transaction = await Transaction.findById(req.params.id);
+  let transaction = await Transaction.findById(req.params.transactionId);
   if (!transaction)
     return res.status(400).send("Please check your transactionId");
-  if (transaction.wallet._id != req.body.walletId)
+  if (transaction.wallet._id != req.params.walletId)
     return res.status(400).send("Wallet cannot be changed.");
-  const wallet = await Wallet.findById(req.body.walletId);
-  const category = await Category.findById(req.body.categoryId).where({
-    walletId: req.body.walletId,
+  const wallet = await Wallet.findById(req.params.walletId);
+  const category = await Category.findById(req.params.categoryId).where({
+    walletId: req.params.walletId,
   });
   if (!category) {
     return res.status(400).send("Please check your categoryId.");
   }
   const oldAmount = transaction.amount;
   transaction = await Transaction.findByIdAndUpdate(
-    req.params.id,
+    req.params.transactionId,
     {
-      wallet: { _id: req.body.walletId, name: wallet.name },
+      wallet: { _id: req.params.walletId, name: wallet.name },
       category: {
         _id: category._id,
         name: category.name,
@@ -82,6 +82,7 @@ const editTransaction = async (req, res) => {
         type: category.type,
       },
       amount: req.body.amount,
+      transactionDate: req.body.transactionDate,
     },
     { new: true }
   );
