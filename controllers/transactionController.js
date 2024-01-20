@@ -10,13 +10,13 @@ const addTransaction = async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const wallet = await Wallet.findById(req.body.walletId);
+  const wallet = await Wallet.findById(req.params.walletId);
   if (!wallet) {
     return res.status(400).send("Please check your walletId.");
   }
 
   const category = await Category.findById(req.body.categoryId).where({
-    walletId: req.body.walletId,
+    walletId: req.params.walletId,
   });
   if (!category) {
     return res.status(400).send("Please check your categoryId.");

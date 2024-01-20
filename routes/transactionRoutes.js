@@ -7,7 +7,7 @@ const {
 } = require("../controllers/transactionController");
 const router = express.Router();
 
-router.post("/addTransaction", addTransaction);
+router.post("/addTransaction/:walletId", addTransaction);
 router.put("/editTransaction/:id", editTransaction);
 router.delete("/deleteTransaction/:id", deleteTransaction);
 router.get("/getTransactions/:walletId", getTransactions);
