@@ -104,12 +104,12 @@ const editTransaction = async (req, res) => {
 };
 
 const deleteTransaction = async (req, res) => {
-  let transaction = await Transaction.findOne({ _id: req.params.id });
+  let transaction = await Transaction.findOne({ _id: req.params.transactionId });
   if (!transaction) {
     return res.status(400).send("Please check your transaction id.");
   }
   const wallet = await Wallet.findById(transaction.wallet._id);
-  transaction = await Transaction.findByIdAndDelete(req.params.id);
+  transaction = await Transaction.findByIdAndDelete(req.params.transactionId);
 
   try {
     const session = await mongoose.startSession();

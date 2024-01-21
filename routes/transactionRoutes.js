@@ -12,7 +12,7 @@ router.put(
   "/editTransaction/:transactionId/:walletId/:categoryId",
   editTransaction
 );
-router.delete("/deleteTransaction/:id", deleteTransaction);
+router.delete("/deleteTransaction/:transactionId", deleteTransaction);
 router.get("/getTransactions/:walletId", getTransactions);
 
 module.exports = router;
