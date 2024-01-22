@@ -26,7 +26,7 @@ const signup = async (req, res) => {
   const token = user.generateAuthToken();
   res
     .header("x-auth-token", token)
-    .send(_.pick(user, ["_id", "name", "email"]));
+    .send({ message: "Token sent successfully!", token: token, id: user._id });
 };
 
 const signin = async (req, res) => {
