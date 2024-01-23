@@ -1,5 +1,6 @@
 const { Transaction, validate } = require("../models/transaction");
 const { Wallet } = require("../models/wallet");
+const { User } = require("../models/user");
 const { Category } = require("../models/category");
 const mongoose = require("mongoose");
 const _ = require("lodash");
@@ -14,7 +15,10 @@ const addTransaction = async (req, res) => {
   if (!wallet) {
     return res.status(400).send("Please check your walletId.");
   }
-
+  const user = await User.findById(req.params.userId);
+  if (!user) {
+    return res.status(400).send("Please check your userId.");
+  }
   const category = await Category.findById(req.body.categoryId).where({
     walletId: req.params.walletId,
   });
@@ -26,6 +30,10 @@ const addTransaction = async (req, res) => {
     wallet: {
       _id: wallet._id,
       name: wallet.name,
+    },
+    user: {
+      _id: user._id,
+      name: user.name,
     },
     category: {
       _id: category._id,
@@ -70,11 +78,16 @@ const editTransaction = async (req, res) => {
   if (!category) {
     return res.status(400).send("Please check your categoryId.");
   }
+  const user = await User.findById(req.params.userId);
+  if (!user) {
+    return res.status(400).send("Please check your userId.");
+  }
   const oldAmount = transaction.amount;
   transaction = await Transaction.findByIdAndUpdate(
     req.params.transactionId,
     {
       wallet: { _id: req.params.walletId, name: wallet.name },
+      user: { _id: user._id, name: user.name },
       category: {
         _id: category._id,
         name: category.name,
@@ -104,7 +117,9 @@ const editTransaction = async (req, res) => {
 };
 
 const deleteTransaction = async (req, res) => {
-  let transaction = await Transaction.findOne({ _id: req.params.transactionId });
+  let transaction = await Transaction.findOne({
+    _id: req.params.transactionId,
+  });
   if (!transaction) {
     return res.status(400).send("Please check your transaction id.");
   }

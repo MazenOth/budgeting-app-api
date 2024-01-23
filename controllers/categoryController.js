@@ -1,5 +1,6 @@
 const { Category, validate } = require("../models/category");
 const { Wallet } = require("../models/wallet");
+const { User } = require("../models/user");
 const _ = require("lodash");
 
 const addCategory = async (req, res) => {
@@ -11,6 +12,10 @@ const addCategory = async (req, res) => {
   if (!wallet) {
     return res.status(400).send("Please check your walletId.");
   }
+  const user = await User.findOne({ _id: req.params.userId });
+  if (!user) {
+    return res.status(400).send("Please check your userId.");
+  }
   let category = await Category.findOne({ name: req.body.name }).where({
     walletId: req.params.walletId,
   });
@@ -19,6 +24,7 @@ const addCategory = async (req, res) => {
   }
   category = new Category({
     walletId: req.params.walletId,
+    userId: req.params.userId,
     name: req.body.name,
     group: req.body.group,
     type: req.body.type,

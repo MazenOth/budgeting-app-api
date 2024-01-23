@@ -29,24 +29,28 @@ const addWallet = async (req, res) => {
   await Category.insertMany([
     {
       walletId: wallet._id,
+      userId: user._id,
       name: "Transportation",
       group: "Required Expense",
       type: "Expense",
     },
     {
       walletId: wallet._id,
+      userId: user._id,
       name: "Education",
       group: "Up & Comers",
       type: "Expense",
     },
     {
       walletId: wallet._id,
+      userId: user._id,
       name: "Streaming Service",
       group: "Fun & Relax",
       type: "Expense",
     },
     {
       walletId: wallet._id,
+      userId: user._id,
       name: "Salary",
       group: "Income",
       type: "Income",

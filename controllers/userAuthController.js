@@ -24,9 +24,13 @@ const signup = async (req, res) => {
   // there is another method that user need to verify his mail first
   // then send the jwt.
   const token = user.generateAuthToken();
-  res
-    .header("x-auth-token", token)
-    .send({ message: "Token sent successfully!", token: token, id: user._id });
+  res.header("x-auth-token", token).send({
+    message: "Token sent successfully!",
+    token: token,
+    id: user._id,
+    email: user.email,
+    name: user.name,
+  });
 };
 
 const signin = async (req, res) => {
@@ -46,10 +50,18 @@ const signin = async (req, res) => {
     return res.status(400).send("Please check your email or password!");
 
   const token = user.generateAuthToken();
-  res
-    .header("x-auth-token", token)
-    .send({ message: "Token sent successfully!", token: token, id: user._id });
+  res.header("x-auth-token", token).send({
+    message: "Token sent successfully!",
+    token: token,
+    id: user._id,
+    email: user.email,
+    name: user.name,
+  });
 };
+
+const deleteUser = async (req, res) => {
+  let user = await User.deleteMany()
+}
 
 const users = async (req, res) => {
   const users = await User.find();

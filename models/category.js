@@ -21,6 +21,11 @@ const Category = mongoose.model(
       ref: "Wallet",
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -43,6 +48,7 @@ const Category = mongoose.model(
 function validateCategory(category) {
   const schema = Joi.object({
     walletId: Joi.objectId(),
+    userId: Joi.objectId(),
     name: Joi.string().min(2).max(50).required(),
     group: Joi.any().valid(...groupEnum).required(),
     type: Joi.any().valid(...typeEnum).required(),

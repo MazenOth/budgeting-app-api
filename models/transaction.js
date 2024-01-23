@@ -12,6 +12,12 @@ const Transaction = mongoose.model(
       }),
       required: true,
     },
+    user: {
+      type: new Schema({
+        name: String,
+      }),
+      required: true,
+    },
     category: {
       type: new Schema({
         name: String,
