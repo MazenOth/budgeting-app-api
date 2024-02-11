@@ -52,6 +52,8 @@ const signin = async (req, res) => {
   if (!validPassword)
     return res.status(400).send("Please check your email or password!");
 
+  let wallet = await Wallet.findOne({ userId: user._id });
+
   const token = user.generateAuthToken();
   res.header("x-auth-token", token).send({
     message: "Token sent successfully!",
@@ -59,6 +61,7 @@ const signin = async (req, res) => {
     id: user._id,
     email: user.email,
     name: user.name,
+    walletId: wallet._id,
   });
 };
 
