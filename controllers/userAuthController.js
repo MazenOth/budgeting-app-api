@@ -3,6 +3,9 @@ const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+const { Wallet } = require("../models/wallet");
+const { Category } = require("../models/category");
+const { Transaction } = require("../models/transaction");
 
 const signup = async (req, res) => {
   const { error } = validate(req.body);
@@ -59,16 +62,24 @@ const signin = async (req, res) => {
   });
 };
 
-const deleteUser = async (req, res) => {
-  let user = await User.deleteMany()
-}
-
 const users = async (req, res) => {
   const users = await User.find();
   res.send(users);
 };
 
-// We might add deleteAccount but it will erase all other
-// dependancies like wallets, transitions and so
+const deleteUser = async (req, res) => {
+  let user = await User.findById(req.params.userId);
+  if (!user) {
+    return res.status(400).send("Please check your userId.");
+  }
+  user = await User.findByIdAndDelete(req.params.userId);
+  let wallet = await Wallet.deleteMany({ userId: req.params.userId });
+  let category = await Category.deleteMany({ userId: req.params.userId });
+  let transaction = await Transaction.deleteMany({
+    "user._id": req.params.userId,
+  });
 
-module.exports = { signup, signin, users };
+  res.send("Erased.");
+};
+
+module.exports = { signup, signin, users, deleteUser };
