@@ -19,11 +19,11 @@ const addTransaction = async (req, res) => {
   if (!user) {
     return res.status(400).send("Please check your userId.");
   }
-  const category = await Category.findById(req.body.categoryId).where({
+  const category = await Category.findOne({ name: req.body.categoryName }).where({
     walletId: req.params.walletId,
   });
   if (!category) {
-    return res.status(400).send("Please check your categoryId.");
+    return res.status(400).send("Please check your category name.");
   }
 
   let transaction = new Transaction({
