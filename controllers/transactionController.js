@@ -19,7 +19,9 @@ const addTransaction = async (req, res) => {
   if (!user) {
     return res.status(400).send("Please check your userId.");
   }
-  const category = await Category.findOne({ name: req.body.categoryName }).where({
+  const category = await Category.findOne({
+    name: req.body.categoryName,
+  }).where({
     walletId: req.params.walletId,
   });
   if (!category) {
@@ -72,11 +74,13 @@ const editTransaction = async (req, res) => {
   if (transaction.wallet._id != req.params.walletId)
     return res.status(400).send("Wallet cannot be changed.");
   const wallet = await Wallet.findById(req.params.walletId);
-  const category = await Category.findById(req.params.categoryId).where({
+  const category = await Category.findOne({
+    name: req.params.categoryName,
+  }).where({
     walletId: req.params.walletId,
   });
   if (!category) {
-    return res.status(400).send("Please check your categoryId.");
+    return res.status(400).send("Please check your categoryName.");
   }
   const user = await User.findById(req.params.userId);
   if (!user) {

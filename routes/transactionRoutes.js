@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/addTransaction/:walletId/:userId", addTransaction);
 router.put(
-  "/editTransaction/:transactionId/:walletId/:categoryId/:userId",
+  "/editTransaction/:transactionId/:walletId/:categoryName/:userId",
   editTransaction
 );
 router.delete("/deleteTransaction/:transactionId", deleteTransaction);
