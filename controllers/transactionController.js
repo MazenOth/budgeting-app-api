@@ -44,6 +44,7 @@ const addTransaction = async (req, res) => {
       type: category.type,
     },
     amount: req.body.amount,
+    transactionDate: req.body.transactionDate,
   });
 
   try {
