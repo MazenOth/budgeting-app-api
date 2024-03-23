@@ -103,7 +103,7 @@ const deleteWallet = async (req, res) => {
 };
 
 const getWallets = async (req, res) => {
-  const wallets = await Wallet.find({}, { name: 1 }).where({
+  const wallets = await Wallet.find({}, { name: 1, balance: 1 }).where({
     userId: req.params.id,
   });
   res.send(wallets);
