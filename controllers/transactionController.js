@@ -51,10 +51,17 @@ const addTransaction = async (req, res) => {
     const session = await mongoose.startSession();
     await session.withTransaction(async () => {
       const result = await transaction.save();
-      var newBalance = wallet.balance - transaction.amount;
-      wallet.balance = newBalance;
-      wallet.save();
-      res.send(result);
+      if (transaction.category.type === "Expense") {
+        var newBalance = wallet.balance - transaction.amount;
+        wallet.balance = newBalance;
+        wallet.save();
+        res.send(result);
+      } else {
+        var newBalance = wallet.balance + transaction.amount;
+        wallet.balance = newBalance;
+        wallet.save();
+        res.send(result);
+      }
     });
 
     session.endSession();
