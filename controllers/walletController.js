@@ -92,7 +92,14 @@ const deleteWallet = async (req, res) => {
     return res.status(400).send("Please check your wallet id.");
   }
   wallet = await Wallet.findByIdAndDelete(req.params.id);
-  res.send(wallet);
+
+  let hasWallets = await Wallet.findOne({ userId: wallet.userId });
+
+  if (hasWallets) {
+    res.send({ hasWallet: true });
+  } else {
+    res.send({ hasWallet: false });
+  }
 };
 
 const getWallets = async (req, res) => {
