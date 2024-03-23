@@ -54,15 +54,27 @@ const signin = async (req, res) => {
 
   let wallet = await Wallet.findOne({ userId: user._id });
 
-  const token = user.generateAuthToken();
-  res.header("x-auth-token", token).send({
-    message: "Token sent successfully!",
-    token: token,
-    id: user._id,
-    email: user.email,
-    name: user.name,
-    walletId: wallet._id,
-  });
+  if (!wallet) {
+    const token = user.generateAuthToken();
+    res.header("x-auth-token", token).send({
+      message: "Token sent successfully!",
+      token: token,
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      walletId: "",
+    });
+  } else {
+    const token = user.generateAuthToken();
+    res.header("x-auth-token", token).send({
+      message: "Token sent successfully!",
+      token: token,
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      walletId: wallet._id,
+    });
+  }
 };
 
 const users = async (req, res) => {
