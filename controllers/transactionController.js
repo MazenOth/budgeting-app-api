@@ -95,6 +95,8 @@ const editTransaction = async (req, res) => {
     return res.status(400).send("Please check your userId.");
   }
   const oldAmount = transaction.amount;
+  const oldCategoryType = transaction.category.type;
+
   transaction = await Transaction.findByIdAndUpdate(
     req.params.transactionId,
     {
@@ -115,10 +117,31 @@ const editTransaction = async (req, res) => {
   try {
     const session = await mongoose.startSession();
     await session.withTransaction(async () => {
-      var newBalance = wallet.balance - (transaction.amount - oldAmount);
-      wallet.balance = newBalance;
-      wallet.save();
-      res.send(transaction);
+      if (oldCategoryType == "Expense") {
+        if (transaction.category.type == "Expense") {
+          var newBalance = wallet.balance - (transaction.amount - oldAmount);
+          wallet.balance = newBalance;
+          wallet.save();
+          res.send(transaction);
+        } else {
+          var newBalance = wallet.balance + (transaction.amount + oldAmount);
+          wallet.balance = newBalance;
+          wallet.save();
+          res.send(transaction);
+        }
+      } else {
+        if (transaction.category.type == "Expense") {
+          var newBalance = wallet.balance - (transaction.amount + oldAmount);
+          wallet.balance = newBalance;
+          wallet.save();
+          res.send(transaction);
+        } else {
+          var newBalance = wallet.balance + (transaction.amount - oldAmount);
+          wallet.balance = newBalance;
+          wallet.save();
+          res.send(transaction);
+        }
+      }
     });
 
     session.endSession();
