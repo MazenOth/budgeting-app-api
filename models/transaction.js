@@ -54,3 +54,5 @@ function validateTransaction(transaction) {
 
 exports.Transaction = Transaction;
 exports.validate = validateTransaction;
+
+

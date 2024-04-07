@@ -178,7 +178,16 @@ const deleteTransaction = async (req, res) => {
 };
 
 const getTransactions = async (req, res) => {
-  const transactions = await Transaction.find().where({
+  const transactions = await Transaction.find(
+    {},
+    {
+      amount: 1,
+      transactionDate: 1,
+      user: { name: 1 },
+      wallet: { name: 1 },
+      category: { name: 1 },
+    }
+  ).where({
     "wallet._id": req.params.walletId,
   });
   res.send(transactions);
