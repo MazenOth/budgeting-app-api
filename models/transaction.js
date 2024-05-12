@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+const intervalEnum = ["second", "daily", "monthly", "yearly"];
+
 const Transaction = mongoose.model(
   "Transaction",
   new Schema({
@@ -36,6 +38,38 @@ const Transaction = mongoose.model(
       default: Date.now,
       required: true,
     },
+    recurring: {
+      type: Boolean,
+      default: false,
+    },
+    startDate: {
+      type: Date,
+      default: Date.now,
+      required: function () {
+        return this.recurring;
+      },
+    },
+    endDate: {
+      type: Date,
+      default: Date.now,
+      required: function () {
+        return this.recurring;
+      },
+    },
+    interval: {
+      type: Number,
+      default: 1,
+      required: function () {
+        return this.recurring;
+      },
+    },
+    intervalType: {
+      type: String,
+      enum: [...intervalEnum],
+      required: function () {
+        return this.recurring;
+      },
+    },
   })
 );
 
@@ -54,5 +88,3 @@ function validateTransaction(transaction) {
 
 exports.Transaction = Transaction;
 exports.validate = validateTransaction;
-
-
