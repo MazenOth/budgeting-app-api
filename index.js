@@ -13,13 +13,3 @@ if (!config.get("jwtPrivateKey")) {
 }
 
 app.listen(port, () => console.log("Listening on port 4000..."));
-
-const startTime = new Date(Date.now() + 5000);
-const endTime = new Date(startTime.getTime() + 5000);
-const x = 1;
-const job = schedule.scheduleJob(
-  { start: startTime, end: endTime, rule: `*/${x} * * * * *` },
-  function () {
-    console.log("Time for tea!");
-  }
-);
