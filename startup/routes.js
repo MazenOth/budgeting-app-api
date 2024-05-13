@@ -4,6 +4,7 @@ const userAuthRoutes = require("../routes/userAuthRoutes");
 const walletRoutes = require("../routes/walletRoutes");
 const categoryRoutes = require("../routes/categoryRoutes");
 const transactionRoutes = require("../routes/transactionRoutes");
+const recurring = require("../routes/recurring");
 const home = require("../routes/home");
 const error = require("../middleware/error");
 
@@ -15,6 +16,7 @@ module.exports = function (app) {
   app.use(walletRoutes);
   app.use(categoryRoutes);
   app.use(transactionRoutes);
+  app.use(recurring);
   app.use(home);
   app.use(error);
 };
