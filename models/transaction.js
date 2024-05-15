@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
-const frequencyEnum = ["second", "daily", "monthly", "yearly"];
-
-const today = new Date(Date.now()).toLocaleString();
-
 const Transaction = mongoose.model(
   "Transaction",
   new Schema({
@@ -40,38 +36,6 @@ const Transaction = mongoose.model(
       default: Date.now,
       required: true,
     },
-    recurring: {
-      type: Boolean,
-      default: false,
-    },
-    startDate: {
-      type: Date,
-      default: Date.now,
-      required: function () {
-        return this.recurring;
-      },
-    },
-    endDate: {
-      type: Date,
-      default: Date.now,
-      required: function () {
-        return this.recurring;
-      },
-    },
-    frequency: {
-      type: Number,
-      default: 1,
-      required: function () {
-        return this.recurring;
-      },
-    },
-    frequencyType: {
-      type: String,
-      enum: [...frequencyEnum],
-      required: function () {
-        return this.recurring;
-      },
-    },
   })
 );
 
@@ -84,11 +48,6 @@ function validateTransaction(transaction) {
       .min("1-1-1992")
       .max("12-31-2123")
       .default(today),
-    startDate: Joi.date().min(today).max("12-31-2123").default(today),
-    endDate: Joi.date().min(today).max("12-31-2123").default(today),
-    frequency: Joi.number().default(1),
-    frequencyType: Joi.any().valid(...frequencyEnum).required(),
-    recurring: Joi.boolean().default(false),
   });
   return schema.validate(transaction);
 }
