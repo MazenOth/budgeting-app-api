@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+const today = new Date(Date.now()).toLocaleString();
+
 const Transaction = mongoose.model(
   "Transaction",
   new Schema({

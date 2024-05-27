@@ -15,7 +15,7 @@ const RecurringTransaction = mongoose.model(
       ref: "Wallet",
       required: true,
     },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -30,11 +30,6 @@ const RecurringTransaction = mongoose.model(
       min: 0.001,
       required: true,
     },
-    transactionDate: {
-      type: Date,
-      default: Date.now,
-      required: true,
-    },
     startDate: {
       type: Date,
       default: Date.now,
@@ -46,6 +41,9 @@ const RecurringTransaction = mongoose.model(
       default: "daily",
       required: true,
     },
+    nextOccurence: {
+      type: Date,
+    },
   })
 );
 
@@ -54,10 +52,6 @@ function validateRecurringTransaction(recurringTransaction) {
     walletId: Joi.objectId(),
     categoryId: Joi.objectId(),
     amount: Joi.number().min(0.001).max(1000000000000).required(),
-    transactionDate: Joi.date()
-      .min("1-1-1992")
-      .max("12-31-2123")
-      .default(today),
     startDate: Joi.date().min(today).max("12-31-2123").default(today),
     frequencyType: Joi.any()
       .valid(...frequencyEnum)
